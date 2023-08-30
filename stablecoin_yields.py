@@ -22,7 +22,7 @@ chat_id = <"chat_id">      # Replace with your channel's chat ID
 bot = Bot(token=bot_token)
 
 async def main():
-    # replace with your MYSQL details
+     # replace with your MYSQL details
     cnx = mysql.connector.connect(
         host=<'host'>,
         user=<'user'>,
@@ -110,11 +110,12 @@ async def main():
                         f'"chain" : "{item["chain"]}",',
                         f'"project" : "{item["project"]}",',
                         f'"symbol" : "{item["symbol"]}",',
-                        f'"tvlUsd" : {item["tvlUsd"]:.8f},',
-                        f'"apy" : {item["apy"]:.8f},'
+                        f'"tvlUsd" : {item["tvlUsd"]:.2f},',
+                        f'"apy" : {item["apy"]:.2f},'
                     ]
                 )
                 new_pools_messages.append(pool_message)
+                new_pools_messages.append("")  # Add an empty line after each pool
         
         new_pools_message = "\n".join(new_pools_messages)
         
