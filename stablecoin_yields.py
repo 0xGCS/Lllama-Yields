@@ -106,12 +106,12 @@ async def main():
             if item["pool"] in new_pool_ids:
                 pool_message = "\n".join(
                     [
-                        f'"pool" : "{item["pool"]}"',
-                        f'"chain" : "{item["chain"]}",',
-                        f'"project" : "{item["project"]}",',
-                        f'"symbol" : "{item["symbol"]}",',
-                        f'"tvlUsd" : {item["tvlUsd"]:.2f},',
-                        f'"apy" : {item["apy"]:.2f},'
+                        f'pool : {item["pool"]}',
+                        f'chain : {item["chain"]},',
+                        f'project : {item["project"]},',
+                        f'symbol : {item["symbol"]},',
+                        f'tvlUsd : {item["tvlUsd"]:.2f},',
+                        f'apy : {item["apy"]:.2f},'
                     ]
                 )
                 new_pools_messages.append(pool_message)
