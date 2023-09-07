@@ -2,5 +2,6 @@
 Telegram bot that tracks the yields from the DeFi Llama API
 
 # Screenshots
-<img width="380" alt="image" src="https://github.com/gcs1915/Lllama-Yields/assets/104216578/a4916997-9226-47db-a5d6-5c23da7077a3">
-<img width="412" alt="image" src="https://github.com/gcs1915/Lllama-Yields/assets/104216578/3d52bab2-d0f2-46d9-8244-fc48151932c1">
+<img width="412" alt="image" src="https://github.com/gcs1915/Lllama-Yields/assets/104216578/b82b7acb-cb15-49b2-a8a6-d34e771ccc7f">
+<img width="412" alt="image" src="https://github.com/gcs1915/Lllama-Yields/assets/104216578/151ffa07-6313-464f-a02e-41557047ca54">
+
