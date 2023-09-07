@@ -4,21 +4,23 @@ Telegram bot that tracks the yields from the DeFi Llama API and post any new poo
 # Requirements
 This bot fetches data from the DeFiLlama API and stores it in a MYSQL database. The database used here has the following schema:
 
-date datetime
-chain varchar(255)
-project varchar(255)
-symbol varchar(255)
-tvlUsd decimal(20,8)
-apyBase decimal(20,8)
-apyReward decimal(20,8)
-apy decimal(20,8)
-rewardTokens varchar(700)
-pool varchar(255)
-apyPct1D decimal(20,8)
-apyPct7D decimal(20,8)
-apyPct30D decimal(20,8)
-underlyingTokens varchar(700)
-apyMean30d decimal(20,8)
+```python
+    date datetime
+    chain varchar(255)
+    project varchar(255)
+    symbol varchar(255)
+    tvlUsd decimal(20,8)
+    apyBase decimal(20,8)
+    apyReward decimal(20,8)
+    apy decimal(20,8)
+    rewardTokens varchar(700)
+    pool varchar(255)
+    apyPct1D decimal(20,8)
+    apyPct7D decimal(20,8)
+    apyPct30D decimal(20,8)
+    underlyingTokens varchar(700)
+    apyMean30d decimal(20,8)
+```
 
 You also need to obtain a Telegram bot token.
 
