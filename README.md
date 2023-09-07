@@ -1,5 +1,5 @@
 # Lllama-Yields
-Telegram bot that tracks the yields from the DeFi Llama API
+Telegram bot that tracks the yields from the DeFi Llama API and post any new pools found into Telegram.
 
 # Screenshots
 <img width="412" alt="image" src="https://github.com/gcs1915/Lllama-Yields/assets/104216578/b82b7acb-cb15-49b2-a8a6-d34e771ccc7f">
