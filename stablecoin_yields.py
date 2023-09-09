@@ -121,11 +121,11 @@ async def main():
         
         message = (
             f"{today_date}\n\n"
-            f"New pools were found:\n{new_pools_message}"
+            f"New Stablecoin pools were found:\n{new_pools_message}"
         )
         await bot.send_message(chat_id=chat_id, text=message)
     else:
-        await bot.send_message(chat_id=chat_id, text=f"{today_date}\n\nNo new pools were found.")
+        await bot.send_message(chat_id=chat_id, text=f"{today_date}\n\nNo new Stablecoin pools were found.")
 
 if __name__ == "__main__":
     asyncio.run(main())  # Run the asynchronous main function
