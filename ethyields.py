@@ -1,33 +1,38 @@
 import requests
 import json
 import mysql.connector
+import asyncio
+import os
+from dotenv import load_dotenv
 from datetime import datetime
 from telegram import Bot
-import asyncio
 
-url = 'https://yields.llama.fi/pools'  
+url = 'https://yields.llama.fi/pools'
 
 headers = {
-  'Accept': 'application/json',
-  'Content-Type': 'application/json'
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
 }
 
 response = requests.request("GET", url, headers=headers, data={})
 data = json.loads(response.text)
 
+#replace with path of .env file
+load_dotenv(<'path'>)
+
 # Initialize the Telegram Bot
-bot_token = <"bot_token">  # Replace with your bot's API token
-chat_id = <"chat_id">      # Replace with your channel's chat ID
+bot_token = os.getenv("BOT_TOKEN")
+chat_id = os.getenv("chat_id")
 
 bot = Bot(token=bot_token)
 
 async def main():
-    # replace with your MYSQL details
+    # Connect to the database
     cnx = mysql.connector.connect(
-        host=<'host'>,
-        user=<'user'>,
-        passwd=<"passwd">,
-        database=<'database'>
+        host=os.getenv('host'),
+        user=os.getenv('user'),
+        passwd=os.getenv('passwd'),
+        database=os.getenv('database')
     )
     cursor = cnx.cursor()
 
