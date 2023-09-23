@@ -1,49 +1,36 @@
+from datetime import datetime
 import requests
 import json
 
-# Fetch data from the vaults endpoint
-vaults_url = 'https://api.beefy.finance/vaults'
-headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-}
+# Fetch vault data
+url = 'https://api.beefy.finance/vaults'
+response = requests.get(url)
+vault_data = response.json()
 
-response = requests.get(vaults_url, headers=headers)
-data = json.loads(response.text)
-
-# Fetch data from the APY endpoint
-apy_url = 'https://api.beefy.finance/apy'
-response = requests.get(apy_url, headers=headers)
-apy_data = json.loads(response.text)
+# Fetch APY data
+url = 'https://api.beefy.finance/apy'
+response = requests.get(url)
+apy_data = response.json()
 
 allowed_chains = ["ethereum", "polygon", "base", "optimism", "arbitrum", "avax", "zksync", "zkevm", "bsc"]
 
-# Filter the original data
-filtered_data = [
-    item for item in data
-    if item["status"] == "active" and
-    item["chain"] in allowed_chains and
-    "IL_NONE" in item["risks"] and
-    "CONTRACTS_VERIFIED" in item["risks"]
-]
+filtered_data = []
+for item in vault_data:
+    if item["status"] == "active" and item["chain"] in allowed_chains:
+        if "IL_NONE" in item.get("risks", []) and "CONTRACTS_VERIFIED" in item.get("risks", []):
+            refined_item = {key: item[key] for key in ["id", "name", "token", "tokenAddress", "platformId", "assets", "risks", "strategyTypeId", "createdAt", "chain"] if key in item}
+            
+            # Convert Unix timestamp to "YYYY-MM-DD HH:MM:SS"
+            refined_item["createdAt"] = datetime.fromtimestamp(refined_item["createdAt"]).strftime('%Y-%m-%d %H:%M:%S')
 
-# Create a list to store the refined dictionaries
-refined_data = []
+            # Attach APY value if exists
+            if refined_item["id"] in apy_data:
+                refined_item["apy"] = apy_data[refined_item["id"]]
+            
+            filtered_data.append(refined_item)
 
-# Include only selected keys and add APY value to each item
-for item in filtered_data:
-    refined_item = {key: item.get(key) for key in ["id", "name", "token", "tokenAddress", "tokenProviderId", "platformId", "assets", "risks", "strategyTypeId", "createdAt", "chain"]}
-
-    # Add the APY value if available
-    item_id = item.get("id", "")
-    apy_value = apy_data.get(item_id)
-    if apy_value is not None:
-        refined_item["apy"] = apy_value
-    
-    refined_data.append(refined_item)
-
-# Save the refined data to a JSON file
+# Save to JSON file
 with open("beefy.json", "w") as file:
-    json.dump(refined_data, file, indent=4)
+    json.dump(filtered_data, file, indent=4)
 
-print("Filtered and refined data saved to beefy.json")
+print("Filtered data saved to beefy.json")
