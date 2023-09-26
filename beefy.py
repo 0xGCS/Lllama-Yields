@@ -17,7 +17,7 @@ response = requests.get(url)
 apy_data = response.json()
 
 #replace with path of your .env file
-load_dotenv(<'file_path'>)
+load_dotenv('.env')
 
 allowed_chains = ["ethereum", "polygon", "base", "optimism", "arbitrum", "avax", "zksync", "zkevm", "bsc"]
 
