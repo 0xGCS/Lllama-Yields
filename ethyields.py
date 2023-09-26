@@ -18,7 +18,7 @@ response = requests.request("GET", url, headers=headers, data={})
 data = json.loads(response.text)
 
 #replace with path of .env file
-load_dotenv(<'path'>)
+load_dotenv('.env')
 
 # Initialize the Telegram Bot
 bot_token = os.getenv("BOT_TOKEN")
@@ -125,7 +125,7 @@ async def main():
                         f'chain : {item["chain"]},',
                         f'project : {item["project"]},',
                         f'symbol : {item["symbol"]},',
-                        f'tvlUsd : {item["tvlUsd"]:.2f},',
+                        f'tvlUsd : {item["tvlUsd"]:,.2f},',
                         f'apy : {item["apy"]:.2f},'
                     ]
                 )
