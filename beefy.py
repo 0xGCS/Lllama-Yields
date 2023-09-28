@@ -45,6 +45,17 @@ cnx = mysql.connector.connect(
 )
 cursor = cnx.cursor()
 
+new_pools = []
+
+# Fetch all current pool IDs from the database
+cursor.execute("SELECT id FROM beefy")
+existing_pool_ids = {row[0] for row in cursor.fetchall()}
+
+# Check for new pools
+for refined_item in filtered_data:
+    if refined_item["id"] not in existing_pool_ids:
+        new_pools.append(refined_item["id"])
+
 # SQL query string
 insert_query = """
 INSERT INTO beefy (date, id, name, token, tokenAddress, tokenProviderId, platformId, assets, risks, strategyTypeId, createdAt, chain, apy)
@@ -73,4 +84,8 @@ cnx.commit()
 cursor.close()
 cnx.close()
 
-print("Filtered data saved to database")
+# Output message based on whether new pools were found or not
+if new_pools:
+    print(f"Filtered data saved to database. New pools were found: {', '.join(new_pools)}")
+else:
+    print("Filtered data saved to database. No new pools were found.")
