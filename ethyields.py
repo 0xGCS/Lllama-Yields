@@ -1,6 +1,6 @@
 import requests
 import json
-import mysql.connector
+import sqlite3
 import asyncio
 import os
 from dotenv import load_dotenv
@@ -28,16 +28,11 @@ bot = Bot(token=bot_token)
 
 async def main():
     # Connect to the database
-    cnx = mysql.connector.connect(
-        host=os.getenv('host'),
-        user=os.getenv('user'),
-        passwd=os.getenv('passwd'),
-        database=os.getenv('database')
-    )
+    cnx = sqlite3.connect('crypto.db')
     cursor = cnx.cursor()
 
     # Retrieve existing pool IDs from the database
-    existing_pool_ids_query = "SELECT DISTINCT pool FROM lsds"
+    existing_pool_ids_query = "SELECT DISTINCT pool FROM ethyields"
     cursor.execute(existing_pool_ids_query)
     existing_pool_ids = set(row[0] for row in cursor.fetchall())
 
@@ -85,8 +80,8 @@ async def main():
         if item["pool"] not in existing_pool_ids:
             new_pool_ids.append(item["pool"])  # Add the new pool ID to the list
             insert_query = """
-            INSERT INTO lsds (date, chain, project, symbol, tvlUsd, apyBase, apyReward, apy, rewardTokens, pool, apyPct1D, apyPct7D, apyPct30D, underlyingTokens, apyMean30d)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO ethyields (date, chain, project, symbol, tvlUsd, apyBase, apyReward, apy, rewardTokens, pool, apyPct1D, apyPct7D, apyPct30D, underlyingTokens, apyMean30d)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """
             cursor.execute(insert_query, (
                 datetime.now(),
