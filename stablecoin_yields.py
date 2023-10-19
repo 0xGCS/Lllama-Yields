@@ -1,6 +1,6 @@
 import requests
 import json
-import mysql.connector
+import sqlite3  # Change the import here
 import asyncio
 import os
 from dotenv import load_dotenv
@@ -17,7 +17,7 @@ headers = {
 response = requests.request("GET", url, headers=headers, data={})
 data = json.loads(response.text)
 
-#replace with path of your .env file
+# Replace with the path of your .env file
 load_dotenv('.env')
 
 # Initialize the Telegram Bot
@@ -27,17 +27,12 @@ chat_id = os.getenv("chat_id")
 bot = Bot(token=bot_token)
 
 async def main():
-     # replace with your MYSQL details
-    cnx = mysql.connector.connect(
-        host=os.getenv('host'),
-        user=os.getenv('user'),
-        passwd=os.getenv('passwd'),
-        database=os.getenv('database')
-    )
+    # Change the database connection to work with SQLite
+    cnx = sqlite3.connect('crypto.db')
     cursor = cnx.cursor()
 
     # Retrieve existing pool IDs from the database
-    existing_pool_ids_query = "SELECT DISTINCT pool FROM yields"
+    existing_pool_ids_query = "SELECT DISTINCT pool FROM stables"  # Change table name to 'stables'
     cursor.execute(existing_pool_ids_query)
     existing_pool_ids = set(row[0] for row in cursor.fetchall())
 
@@ -75,8 +70,8 @@ async def main():
         if item["pool"] not in existing_pool_ids:
             new_pool_ids.append(item["pool"])  # Add the new pool ID to the list
             insert_query = """
-            INSERT INTO yields (date, chain, project, symbol, tvlUsd, apyBase, apyReward, apy, rewardTokens, pool, apyPct1D, apyPct7D, apyPct30D, underlyingTokens, apyMean30d)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO stables (date, chain, project, symbol, tvlUsd, apyBase, apyReward, apy, rewardTokens, pool, apyPct1D, apyPct7D, apyPct30D, underlyingTokens, apyMean30d)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """
             cursor.execute(insert_query, (
                 datetime.now(),
@@ -131,6 +126,7 @@ async def main():
         await bot.send_message(chat_id=chat_id, text=message)
     else:
         await bot.send_message(chat_id=chat_id, text=f"{today_date}\n\nNo new Stablecoin pools were found.")
+
 
 if __name__ == "__main__":
     asyncio.run(main())  # Run the asynchronous main function
